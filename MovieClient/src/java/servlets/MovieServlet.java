@@ -8,6 +8,7 @@ package servlets;
 
 import client.NewJerseyClient;
 import entity.Moviedb;
+import flickr.Flickr;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 
@@ -70,6 +73,15 @@ public class MovieServlet extends HttpServlet {
         
     }
     public void searchByFlickr(HttpServletRequest request,HttpServletResponse response){
+        String movieTitle = request.getParameter("moviename");
+        
+        Flickr flickr = Flickr.getInstance();
+        ImageIcon icon = (ImageIcon) flickr.search(movieTitle);
+        
+        
+        
+        System.out.println("i am "+  icon);
+        
         
     }
 
