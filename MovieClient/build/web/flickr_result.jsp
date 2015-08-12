@@ -1,3 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,8 +32,8 @@
                     <ul class="nav navbar-nav">
                         <li  aria-label="Left Align"><a href="./index.jsp"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> HOME</a></li>
                         <li><a href="./local.jsp">LOCAL</a></li>
-                        <li><a href="./flickr.jsp">FLICKR</a></li>
-                        <li class="active"><a href="./google.jsp">GOOGLE</a></li>
+                        <li class="active"><a href="./flickr.jsp">FLICKR</a></li>
+                        <li><a href="./google.jsp">GOOGLE</a></li>
                         <li><a href="./tudou.jsp">TUDOU</a></li>
                         <li><a href="./addmovie.jsp">ADD</a></li>
                     </ul>
@@ -43,21 +45,18 @@
  <div class="container">            
             <!-- header-->
             <div class="row">
-                <br>
-                <br>
-                <br>
                 <h3 class="text-center"><img height="80" width="250" src="./img/logo.png"></h3>
 
             </div><!--header -->
 
 
             <div class="row">
-                <form role="form" class="form-horizontal" method="post" action="MovieServlet?method=googel">
+                <form role="form" class="form-horizontal" method="post" action="MovieServlet?method=flickr">
                     <div class="form-group-lg">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="yui3-skin-sam input-group">
                                 <div id="the-basics">
-                                    <input type="text" id="yui-ac" name="moviename" class="typeahead form-control" placeholder="Search">
+                                    <input type="text"  name="moviename" class="typeahead form-control" placeholder="Search">
                                 </div>
 
                                 <span class="input-group-btn">
@@ -69,10 +68,27 @@
 
                 </form>
             </div>
-
-
-            <!-- picture slide-->     
-
-
+            </div>
+            <br>
+            <hr>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h3>Search result</h3>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p class="text-justify">
+                        <c:forEach var="url" items="${imgurl}">
+                            <img src="${url}" class="img-rounded img-margin"  onload="AutoResizeImage(0, 200, this)">
+                        </c:forEach>
+                    </p>
+                </div>
+                
+                <div>
+                    <h3>${error}</h3>
+                </div>
+            </div>            
+            
 </body>
 </html>

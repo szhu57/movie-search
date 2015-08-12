@@ -7,7 +7,6 @@ package flickr;
 
 
 
-import java.awt.Image;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -57,8 +53,8 @@ public class Flickr {
    private final String searchMethodFormat =
        "https://api.flickr.com/services/rest/?method=flickr.photos.search" +
        "&format=rest" +
-       "&api_key=49d3ab29f8e5b08550ba13a98e7c3891" +
-       "&per_page=1" +        // just send one match back
+       "&api_key=64ecc238a446da33bfbb98a5d612cc36" +
+       "&per_page=10" +        // just send one match back
        "&sort=interestingness-desc" +
        "&text=%s";
 
@@ -125,7 +121,7 @@ public class Flickr {
    }
 
 
-   public Icon search(String keyword) {
+   public List<String> search(String keyword) {
        URL searchURL = newURL(String.format(searchMethodFormat, keyword));
        if (searchURL == null) {
            return null;
@@ -138,23 +134,22 @@ public class Flickr {
        if (elts == null) {
            return null;
        }
-       Element elt = elts.get(0);
-       String farm = elementAttribute(elt, "farm");
-       String server = elementAttribute(elt, "server");
-       String id = elementAttribute(elt, "id");
-       String secret = elementAttribute(elt, "secret");
-       Image image = null;
-       if ((farm != null) && (server != null) && (id != null) && (secret != null)) {
-           URL imageURL = newURL(String.format(photoURLFormat, farm, server, id, secret));
-           if (imageURL != null) {
-               try {
-                   image = ImageIO.read(imageURL);
-               }
-               catch (IOException e) {
-                   logger.log(Level.WARNING, String.format("couldn't load \"%s\"", imageURL), e);
-               }
+       ArrayList<String> image = new ArrayList<>();
+       for(Element elt:elts){
+           //Element elt = elts.get(0);
+           String farm = elementAttribute(elt, "farm");
+           String server = elementAttribute(elt, "server");
+           String id = elementAttribute(elt, "id");
+           String secret = elementAttribute(elt, "secret");
+           
+           // Image image = null;
+           if ((farm != null) && (server != null) && (id != null) && (secret != null)) {
+               URL imageURL = newURL(String.format(photoURLFormat, farm, server, id, secret));
+               image.add(imageURL.toString());
+                System.out.println(image);
            }
+          
        }
-       return image != null ? new ImageIcon(image) : null;
-   }
+       return image;
+}
 }

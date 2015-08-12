@@ -10,17 +10,16 @@ import client.NewJerseyClient;
 import entity.Moviedb;
 import flickr.Flickr;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
+import new_flickr.FlickrItem;
 
 
 //import net.sf.json.JSONObject;
@@ -65,25 +64,72 @@ public class MovieServlet extends HttpServlet {
                 
             }else if(method.equals("flickr")){
                 
-                searchByFlickr(request,response);
+               // searchByFlickr(request,response);
+                 searchByNewFlickr(request,response);
+            }else if(method.equals("google")){
+                
+                searchByGoogle(request,response);
             }
             
         }
           
         
     }
-    public void searchByFlickr(HttpServletRequest request,HttpServletResponse response){
-        String movieTitle = request.getParameter("moviename");
-        
-        Flickr flickr = Flickr.getInstance();
-        ImageIcon icon = (ImageIcon) flickr.search(movieTitle);
-        
-        
-        
-        System.out.println("i am "+  icon);
+    
+    public void searchByGoogle(HttpServletRequest request,HttpServletResponse response){
         
         
     }
+    public void searchByNewFlickr(HttpServletRequest request,HttpServletResponse response){
+      
+        List<FlickrItem> img =new ArrayList<>();
+       List<String> list = new ArrayList<>();
+         String movieTitle = request.getParameter("moviename");
+        img = new_flickr.Flickr.getInstance().search(movieTitle,"25");
+        if(img!=null){
+        for(FlickrItem flickr: img){
+            list.add(flickr.getURL().toString());
+        } request.setAttribute("imgurl", list);
+        }else request.setAttribute("error", "sorry not found");
+        String page="/flickr_result.jsp";
+      try
+     {
+      request.getRequestDispatcher(page).forward(request, response);
+     } catch(ServletException e){
+         System.out.println("_______exception");
+         
+     }catch(IOException e1){
+     }
+    }
+    public void searchByFlickr(HttpServletRequest request,HttpServletResponse response){
+      
+        List<String> img =new ArrayList<>();
+       // List<String> list = new ArrayList<>();
+         String movieTitle = request.getParameter("moviename");
+        img = Flickr.getInstance().search(movieTitle);
+//          Iterator<String> it = img.iterator();	
+            if(img!=null){
+//	        while(it.hasNext()){
+//                    String str =it.next();
+//	        list.add(str);
+//                System.out.println(list);
+//	       }
+              request.setAttribute("imgurl", img);
+        }else request.setAttribute("error", "sorry not found");
+        String page="/flickr_result.jsp";
+      try
+     {
+      request.getRequestDispatcher(page).forward(request, response);
+     } catch(ServletException e){
+         System.out.println("_______exception");
+         
+     }catch(IOException e1){
+     }
+        
+    }
+    
+    
+    
 
     public void searchByLocal(HttpServletRequest request, HttpServletResponse response) throws JSONException {
         
