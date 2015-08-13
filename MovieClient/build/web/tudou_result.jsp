@@ -16,21 +16,21 @@
 
         <script src="./js/jquery-2.1.4.min.js" type="text/javascript"></script>
         <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
-        
+
         <title>Welcome to Movie Search!</title>
     </head>
     <body>
-       
+
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container-fluid" >
-                <!-- Brand and toggle get grouped for better mobile display -->
-                
+                <!-- Brand and toggle get grouped for better mobile display --> v 
+
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="./index.jsp">Movie Search</a>
                 </div>
@@ -43,18 +43,18 @@
                         <li><a href="./flickr.jsp">FLICKR</a></li>
                         <li><a href="./google.jsp">GOOGLE</a></li>
                         <li class="active"><a href="./tudou.jsp">TUDOU</a></li>
-                           <li><a href="./youtube.jsp">YOUTUBE</a></li>
+                        <li><a href="./youtube.jsp">YOUTUBE</a></li>
                         <li><a href="./addmovie.jsp">ADD</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        
-  
- <div class="container">            
+
+
+        <div class="container">            
             <!-- header-->
             <div class="row">
-               
+
                 <h3 class="text-center"><img height="80" width="250" src="./img/logo.png"></h3>
 
             </div><!--header -->
@@ -78,9 +78,9 @@
 
                 </form>
             </div>
-         <%
-            List<Tudou> tudou = (List<Tudou>) request.getAttribute("tudou");
-        %>
+            <%
+                List<Tudou> tudou = (List<Tudou>) request.getAttribute("tudou");
+            %>
 
             <br>
             <hr>
@@ -90,19 +90,20 @@
                         <h3>Search result</h3>
                     </div>
                 </div>
-                <div class="panel-body">
-                    <p class="text-justify">
-                        <c:forEach var="tudou" items="${tudou}">
-                            <embed src="<c:out value="${tudou.getOuterPlayerUrl()}"/>"height=500 width=500/>
-                        </c:forEach>
-                    </p>
-                </div>
-                
+            
+                <p class="text-justify">
+                    <c:forEach var="tudou" items="${tudou}">
+                        <embed src="<c:out value="${tudou.getOuterPlayerUrl()}"/>"height=500 width=500 allowfullscreen="true"/>
+                 
+                    </c:forEach>
+                </p>
+
+
                 <div>
                     <h3>${message}</h3>
                 </div>
             </div>  
 
 
-</body>
+    </body>
 </html>

@@ -27,6 +27,8 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import new_flickr.FlickrItem;
 import tudou.Tudou;
+import youtube.YoutubeItem;
+import youtube.YoutubeSearch;
 
 //import net.sf.json.JSONObject;
 /**
@@ -76,10 +78,41 @@ public class MovieServlet extends HttpServlet {
                 searchByGoogle(request, response);
             } else if (method.equals("tudou")) {
                 searchByTudou(request, response);
+            } else if (method.equals("youtube")) {
+
+                searchByYoutube(request, response);
             }
 
         }
 
+    }
+
+    public void searchByYoutube(HttpServletRequest request, HttpServletResponse response) {
+
+        String movieTitle = request.getParameter("moviename".trim());
+        
+        YoutubeSearch instance = YoutubeSearch.getInstance();
+        List<YoutubeItem> list =new  ArrayList<>();
+      
+       list= instance.searchFromYoutube(movieTitle);
+       System.out.println(list);
+       if(list!=null){
+           request.setAttribute("video", list);
+           
+       }else request.setAttribute("message", "NOT FOUND");
+       
+       
+        try {
+            request.getRequestDispatcher("/youtube_result.jsp").forward(request, response);
+        } catch (ServletException e) {
+            System.out.println("_______exception");
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+   
+        
+        
     }
 
     public void searchByTudou(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
@@ -93,13 +126,22 @@ public class MovieServlet extends HttpServlet {
                     + "&kw=" + keyword
                     + "&pageNo=1"
             );
+//            restServiceURL = new URL("http://api.tudou.com/v3/gw?method=item.search&appKey=15eb0f0d933741c3"
+//                    + "&format=json"
+//                    + "&kw="+keyword
+//                    + "&pageNo=1"
+//                    + "&pageSize=10"
+//                    + "&channelId=0"
+//                    + "&ttlevel=l"
+//                    + "&media=v&sort=s"
+//            );
             httpConnection = (HttpURLConnection) restServiceURL.openConnection();
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Accept", "application/json");
             if (httpConnection.getResponseCode() != 200) {
                 request.setAttribute("message", "NOT FOUND");
-                 request.getRequestDispatcher("/tudou_result.jsp").forward(request, response);
-                
+                request.getRequestDispatcher("/tudou_result.jsp").forward(request, response);
+
                 throw new RuntimeException("HTTP GET Request Failed with Error code : "
                         + httpConnection.getResponseCode());
             }
@@ -109,7 +151,7 @@ public class MovieServlet extends HttpServlet {
             while ((output = responseBuffer.readLine()) != null) {
                 result += output;
             }
-           // System.out.println(result);
+            // System.out.println(result);
             JSONObject jo = JSONObject.fromObject(result);
             System.out.println(jo);
             if (jo != null) {
@@ -119,25 +161,26 @@ public class MovieServlet extends HttpServlet {
                     List<Tudou> tudou = new ArrayList<>();
                     for (int i = 0; i < array.size(); i++) {
                         JSONObject job = array.getJSONObject(i);
-                        System.out.println("---------------------------->"+job);
+                        System.out.println("---------------------------->" + job);
                         Tudou td = new Tudou();
-                       td.setItemCode(job.getString("itemCode"));
+                        td.setItemCode(job.getString("itemCode"));
                         td.setTitle(job.getString("title"));
-                    td.setDescription(job.getString("description"));
-//                        td.setDescription(job.getString("playUrl"));
-//                        td.setDescription(job.getString("location"));
-//                        td.setDescription(job.getString("picUrl"));
-                 td.setOuterPlayerUrl(job.getString("outerPlayerUrl"));
+                        td.setDescription(job.getString("description"));
+                        td.setPlayUrl(job.getString("playUrl"));
+                        td.setLocation(job.getString("location"));
+                        td.setPicUrl(job.getString("picUrl"));
+                        td.setOuterPlayerUrl(job.getString("outerPlayerUrl"));
                         tudou.add(td);
 
                     }
                     // System.out.println(tudou);
                     request.setAttribute("tudou", tudou);
-                }else request.setAttribute("message", "NOT FOUND");
-                
+                } else {
+                    request.setAttribute("message", "NOT FOUND");
+                }
+
             }
 
-           
             request.getRequestDispatcher("/tudou_result.jsp").forward(request, response);
 
             //System.out.print(result);

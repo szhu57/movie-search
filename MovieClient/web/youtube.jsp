@@ -51,7 +51,7 @@
 
 
             <div class="row">
-                <form role="form" class="form-horizontal" method="post" action="MovieServlet?method=googel">
+                <form role="form" class="form-horizontal" method="post" action="MovieServlet?method=youtube">
                     <div class="form-group-lg">
                         <div class="col-md-8 col-md-offset-2">
                             <div class="yui3-skin-sam input-group">
