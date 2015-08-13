@@ -33,6 +33,7 @@
                         <li><a href="./flickr.jsp">FLICKR</a></li>
                         <li><a href="./google.jsp">GOOGLE</a></li>
                         <li><a href="./tudou.jsp">TUDOU</a></li>
+                           <li><a href="./youtube.jsp">YOUTUBE</a></li>
                         <li><a href="./addmovie.jsp">ADD</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->

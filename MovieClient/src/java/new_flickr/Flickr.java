@@ -5,7 +5,6 @@
  */
 package new_flickr;
 
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -41,28 +40,27 @@ public class Flickr {
      * http://www.flickr.com/services/api/misc.urls.html, i.e.
      * http://farm{farm-id}.static.flickr.com/{server-id}/{id}_{secret}_[mstb].jpg"
      */
-    private final String photoURLFormat =
-            "http://farm%s.static.flickr.com/%s/%s_%s%s.jpg";
+    private final String photoURLFormat
+            = "http://farm%s.static.flickr.com/%s/%s_%s%s.jpg";
 
     /* An HTTP get format string for looking up a single "Photo" that matches
      * a query string.  This request is documented on the Yahoo/Flickr
      * site here: http://www.flickr.com/services/api/flickr.photos.search.html
      */
-    private final String searchMethodFormat =
-            "https://api.flickr.com/services/rest/?method=flickr.photos.search"
+    private final String searchMethodFormat
+            = "https://api.flickr.com/services/rest/?method=flickr.photos.search"
             + "&format=rest"
             + "&api_key=49d3ab29f8e5b08550ba13a98e7c3891"
-            + "&per_page=30" 
+            + "&per_page=30"
             + "&sort=relevance"
             + "&page=%s"
             + "&text=%s";
-    
-    private final String getSizeMethodFormat =
-            "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes"
+
+    private final String getSizeMethodFormat
+            = "https://api.flickr.com/services/rest/?method=flickr.photos.getSizes"
             + "&format=rest"
             + "&api_key=49d3ab29f8e5b08550ba13a98e7c3891"
             + "&photo_id=%s";
-    
 
     private Flickr() throws ParserConfigurationException {
         logger = Logger.getLogger(Flickr.class.getName());
@@ -144,9 +142,8 @@ public class Flickr {
         return false;
     }
 
-
     public List<FlickrItem> search(String keyword, String page) {
-       // keyword = keywor;
+        // keyword = keywor;
         URL searchURL = newURL(String.format(searchMethodFormat, page, keyword));
         if (searchURL == null) {
             return null;
@@ -170,7 +167,7 @@ public class Flickr {
             if ((farm != null) && (server != null) && (id != null) && (secret != null)) {
                 String URL = false ? String.format(photoURLFormat, farm, server, id, secret, "_b") : String.format(photoURLFormat, farm, server, id, secret, "");
                 String thumb = String.format(photoURLFormat, farm, server, id, secret, "_q");
-                
+
                 if (URL != null) {
                     FlickrItem tmp = new FlickrItem(URL, thumb, title);
                     items.add(tmp);

@@ -19,51 +19,40 @@ import net.sf.json.JSONObject;
  */
 public class AddMovieServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doPost(request, response);
     }
 
-  
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-         response.setContentType("text/html;charset=UTF-8");
-        // request.setCharacterEncoding("utf-8");
-            String title = request.getParameter("title");
-            String type = request.getParameter("type");
-            String director = request.getParameter("director");
-            String description =request.getParameter("description");
-            String url = request.getParameter("coverurl");
-            String starts = request.getParameter("starts");
-            String rating = request.getParameter("rating");
-           // System.out.println(title+type+director+url+starts);
-            
-          
-            
-            JSONObject jo = new JSONObject();
-            
-            jo.put("coverurl", url);
-            jo.put("title", title);
-            jo.put("type", type);
-            jo.put("director", director);
-            jo.put("starts",starts);
-            jo.put("description", description);
-            jo.put("rating",rating);
-            NewJerseyClient movieClient= new NewJerseyClient();
-            movieClient.create_JSON(jo.toString());
-            
-            
-                    
-            
-            
-                
-  
-    }
 
+        response.setContentType("text/html;charset=UTF-8");
+        // request.setCharacterEncoding("utf-8");
+        String title = request.getParameter("title");
+        String type = request.getParameter("type");
+        String director = request.getParameter("director");
+        String description = request.getParameter("description");
+        String url = request.getParameter("coverurl");
+        String starts = request.getParameter("starts");
+        String rating = request.getParameter("rating");
+           // System.out.println(title+type+director+url+starts);
+
+        JSONObject jo = new JSONObject();
+
+        jo.put("coverurl", url);
+        jo.put("title", title);
+        jo.put("type", type);
+        jo.put("director", director);
+        jo.put("starts", starts);
+        jo.put("description", description);
+        jo.put("rating", rating);
+        NewJerseyClient movieClient = new NewJerseyClient();
+        movieClient.create_JSON(jo.toString());
+
+    }
 
     @Override
     public String getServletInfo() {

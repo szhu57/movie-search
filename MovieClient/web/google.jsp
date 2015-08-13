@@ -33,6 +33,7 @@
                         <li><a href="./flickr.jsp">FLICKR</a></li>
                         <li class="active"><a href="./google.jsp">GOOGLE</a></li>
                         <li><a href="./tudou.jsp">TUDOU</a></li>
+                           <li><a href="./youtube.jsp">YOUTUBE</a></li>
                         <li><a href="./addmovie.jsp">ADD</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
@@ -43,9 +44,7 @@
  <div class="container">            
             <!-- header-->
             <div class="row">
-                <br>
-                <br>
-                <br>
+               
                 <h3 class="text-center"><img height="80" width="250" src="./img/logo.png"></h3>
 
             </div><!--header -->
