@@ -1,26 +1,33 @@
+<%-- 
+    Document   : google_result
+    Created on : Aug 14, 2015, 2:37:20 PM
+    Author     : hp
+--%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css">
 
-        <script src="./js/jquery-2.1.4.min.js"type="text/javascript"></script>
+        <script src="./js/jquery-2.1.4.min.js" type="text/javascript"></script>
         <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
-        
+
         <title>Welcome to Movie Search!</title>
     </head>
     <body>
 
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container-fluid" >
-                <!-- Brand and toggle get grouped for better mobile display -->
-                
+                <!-- Brand and toggle get grouped for better mobile display --> v 
+
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                     <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="./index.jsp">Movie Search</a>
                 </div>
@@ -32,19 +39,19 @@
                         <li><a href="./local.jsp">LOCAL</a></li>
                         <li><a href="./flickr.jsp">FLICKR</a></li>
                         <li class="active"><a href="./google.jsp">GOOGLE</a></li>
-                        <li><a href="./tudou.jsp">TUDOU</a></li>
-                           <li><a href="./youtube.jsp">YOUTUBE</a></li>
+                        <li ><a href="./tudou.jsp">TUDOU</a></li>
+                        <li ><a href="./youtube.jsp">YOUTUBE</a></li>
                         <li><a href="./addmovie.jsp">ADD</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        
-  
- <div class="container">            
+
+
+        <div class="container">            
             <!-- header-->
             <div class="row">
-               
+
                 <h3 class="text-center"><img height="80" width="250" src="./img/logo.png"></h3>
 
             </div><!--header -->
@@ -68,10 +75,39 @@
 
                 </form>
             </div>
+            <br>
+            <br
+            
+            <div clas="row">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <h4>Google Search result</h4>
+                    </div>
+             
+       
+            </div>
+                <div class="panel-body">
+                <ul class="alert-success">
+              
+                    <c:forEach var="item" items="${google}">
+                        <li>
+                        <a href="${item.link}" target="_Blank">
+                            <strong> ${item.title}</strong>
+                        </a>
+                        <p>${item.sinppet}</p>
+                        </li>
+                    </c:forEach>
+             
+
+                </ul>
+                </div>
+            </div>
+                <div>
+                    <h3>${message}</h3>
+                </div>
+            </div>  
 
 
-            <!-- picture slide-->     
-
-
-</body>
+    </body>
 </html>

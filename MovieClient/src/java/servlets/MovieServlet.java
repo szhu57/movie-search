@@ -8,6 +8,7 @@ package servlets;
 import client.NewJerseyClient;
 import entity.Moviedb;
 import flickr.Flickr;
+import google.Google;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -76,6 +77,7 @@ public class MovieServlet extends HttpServlet {
             } else if (method.equals("google")) {
 
                 searchByGoogle(request, response);
+
             } else if (method.equals("tudou")) {
                 searchByTudou(request, response);
             } else if (method.equals("youtube")) {
@@ -87,21 +89,85 @@ public class MovieServlet extends HttpServlet {
 
     }
 
+    public void searchByGoogle(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+        String k = request.getParameter("moviename");
+        String keyword = URLEncoder.encode(k, "utf-8");
+        HttpURLConnection httpConnection = null;
+        try {
+            URL restServiceURL;
+            restServiceURL = new URL(" https://www.googleapis.com/customsearch/v1?key=AIzaSyAXjKWG4Zj1oGWEZPdaygBR4OA424ZdRyw"
+                    + "&cx=017273734144320215856:dknc-smozwk"
+                    + "&q=" + keyword
+                    +"&num=10"
+            );
+
+            httpConnection = (HttpURLConnection) restServiceURL.openConnection();
+            httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Accept", "application/json");
+            if (httpConnection.getResponseCode() != 200) {
+                request.setAttribute("message", "NOT FOUND");
+                request.getRequestDispatcher("/google_result.jsp").forward(request, response);
+
+                throw new RuntimeException("HTTP GET Request Failed with Error code : "
+                        + httpConnection.getResponseCode());
+            }
+            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+                    (httpConnection.getInputStream()), "utf-8"));
+            String result = "", output;
+            while ((output = responseBuffer.readLine()) != null) {
+                result += output;
+            }
+            //  System.out.println(result);
+            JSONObject jo = JSONObject.fromObject(result);
+            //System.out.println(jo);
+            if (jo != null) {
+                JSONArray array = jo.getJSONArray("items");
+                System.out.println(array);
+                if (array != null && array.size() > 0) {
+                    List<Google> googleList = new ArrayList<>();
+                    for (int i = 0; i < array.size(); i++) {
+                        JSONObject job = array.getJSONObject(i);
+                        System.out.println("---------------------------->" + job);
+                        Google go = new Google();
+                        go.setLink(job.getString("link"));
+                        go.setSinppet(job.getString("snippet"));
+                        go.setTitle(job.getString("title"));
+                        googleList.add(go);
+
+                    }
+                    // System.out.println(tudou);
+                    request.setAttribute("google", googleList);
+                } else {
+                    request.setAttribute("message", "NOT FOUND");
+                }
+
+            }
+
+            request.getRequestDispatcher("/google_result.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            httpConnection.disconnect();
+        }
+    }
+
     public void searchByYoutube(HttpServletRequest request, HttpServletResponse response) {
 
         String movieTitle = request.getParameter("moviename".trim());
-        
+
         YoutubeSearch instance = YoutubeSearch.getInstance();
-        List<YoutubeItem> list =new  ArrayList<>();
-      
-       list= instance.searchFromYoutube(movieTitle);
-       System.out.println(list);
-       if(list!=null){
-           request.setAttribute("video", list);
-           
-       }else request.setAttribute("message", "NOT FOUND");
-       
-       
+        List<YoutubeItem> list = new ArrayList<>();
+
+        list = instance.searchFromYoutube(movieTitle);
+        System.out.println(list);
+        if (list != null) {
+            request.setAttribute("video", list);
+
+        } else {
+            request.setAttribute("message", "NOT FOUND");
+        }
+
         try {
             request.getRequestDispatcher("/youtube_result.jsp").forward(request, response);
         } catch (ServletException e) {
@@ -110,9 +176,7 @@ public class MovieServlet extends HttpServlet {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
-   
-        
-        
+
     }
 
     public void searchByTudou(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
@@ -125,16 +189,9 @@ public class MovieServlet extends HttpServlet {
                     + "&format=json"
                     + "&kw=" + keyword
                     + "&pageNo=1"
+                    
             );
-//            restServiceURL = new URL("http://api.tudou.com/v3/gw?method=item.search&appKey=15eb0f0d933741c3"
-//                    + "&format=json"
-//                    + "&kw="+keyword
-//                    + "&pageNo=1"
-//                    + "&pageSize=10"
-//                    + "&channelId=0"
-//                    + "&ttlevel=l"
-//                    + "&media=v&sort=s"
-//            );
+
             httpConnection = (HttpURLConnection) restServiceURL.openConnection();
             httpConnection.setRequestMethod("GET");
             httpConnection.setRequestProperty("Accept", "application/json");
@@ -189,10 +246,6 @@ public class MovieServlet extends HttpServlet {
         } finally {
             httpConnection.disconnect();
         }
-
-    }
-
-    public void searchByGoogle(HttpServletRequest request, HttpServletResponse response) {
 
     }
 
