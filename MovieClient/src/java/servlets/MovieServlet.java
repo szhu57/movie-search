@@ -6,6 +6,7 @@
 package servlets;
 
 import client.NewJerseyClient;
+
 import entity.Moviedb;
 import flickr.Flickr;
 import google.Google;
@@ -55,7 +56,7 @@ public class MovieServlet extends HttpServlet {
     @Override
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+            throws IOException, UnsupportedEncodingException, ServletException {
         // fix the Chinese charactor
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("utf-8");
@@ -89,39 +90,18 @@ public class MovieServlet extends HttpServlet {
 
     }
 
-    public void searchByGoogle(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
+    public void searchByGoogle(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException, ServletException, IOException {
         String k = request.getParameter("moviename");
         String keyword = URLEncoder.encode(k, "utf-8");
-        HttpURLConnection httpConnection = null;
-        try {
-            URL restServiceURL;
-            restServiceURL = new URL(" https://www.googleapis.com/customsearch/v1?key=AIzaSyAXjKWG4Zj1oGWEZPdaygBR4OA424ZdRyw"
-                    + "&cx=017273734144320215856:dknc-smozwk"
-                    + "&q=" + keyword
-                    +"&num=10"
-            );
-
-            httpConnection = (HttpURLConnection) restServiceURL.openConnection();
-            httpConnection.setRequestMethod("GET");
-            httpConnection.setRequestProperty("Accept", "application/json");
-            if (httpConnection.getResponseCode() != 200) {
-                request.setAttribute("message", "NOT FOUND");
-                request.getRequestDispatcher("/google_result.jsp").forward(request, response);
-
-                throw new RuntimeException("HTTP GET Request Failed with Error code : "
-                        + httpConnection.getResponseCode());
-            }
-            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
-                    (httpConnection.getInputStream()), "utf-8"));
-            String result = "", output;
-            while ((output = responseBuffer.readLine()) != null) {
-                result += output;
-            }
-            //  System.out.println(result);
-            JSONObject jo = JSONObject.fromObject(result);
-            //System.out.println(jo);
-            if (jo != null) {
+        String url = " https://www.googleapis.com/customsearch/v1?key=AIzaSyAXjKWG4Zj1oGWEZPdaygBR4OA424ZdRyw"
+                + "&cx=017273734144320215856:dknc-smozwk"
+                + "&q=" + keyword
+                + "&num=10";
+        JSONObject jo = getHttpRequestResult(request, response, keyword, url);
+        if (jo != null) {
+            try {
                 JSONArray array = jo.getJSONArray("items");
+
                 System.out.println(array);
                 if (array != null && array.size() > 0) {
                     List<Google> googleList = new ArrayList<>();
@@ -140,16 +120,21 @@ public class MovieServlet extends HttpServlet {
                 } else {
                     request.setAttribute("message", "NOT FOUND");
                 }
+            } catch (net.sf.json.JSONException e) {
+                request.setAttribute("message", "NOT FOUND");
+                request.getRequestDispatcher("/" + request.getParameter("method") + "_result.jsp").forward(request, response);
 
             }
-
-            request.getRequestDispatcher("/google_result.jsp").forward(request, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            httpConnection.disconnect();
         }
+        try {
+            request.getRequestDispatcher("/google_result.jsp").forward(request, response);
+        } catch (ServletException e) {
+            System.out.println("_______exception");
+
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+
     }
 
     public void searchByYoutube(HttpServletRequest request, HttpServletResponse response) {
@@ -182,69 +167,44 @@ public class MovieServlet extends HttpServlet {
     public void searchByTudou(HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         String k = request.getParameter("moviename");
         String keyword = URLEncoder.encode(k, "utf-8");
-        HttpURLConnection httpConnection = null;
-        try {
-            URL restServiceURL;
-            restServiceURL = new URL("http://api.tudou.com/v6/video/search?app_key=15eb0f0d933741c3"
-                    + "&format=json"
-                    + "&kw=" + keyword
-                    + "&pageNo=1"
-                    
-            );
+        String url = "http://api.tudou.com/v6/video/search?app_key=15eb0f0d933741c3"
+                + "&format=json"
+                + "&kw=" + keyword
+                + "&pageNo=1";
+        JSONObject jo = getHttpRequestResult(request, response, keyword, url);
+        System.out.println(jo);
+        if (jo != null) {
+            JSONArray array = jo.getJSONArray("results");
+            System.out.println(array);
+            if (array != null && array.size() > 0) {
+                List<Tudou> tudou = new ArrayList<>();
+                for (int i = 0; i < array.size(); i++) {
+                    JSONObject job = array.getJSONObject(i);
+                    System.out.println("---------------------------->" + job);
+                    Tudou td = new Tudou();
+                    td.setItemCode(job.getString("itemCode"));
+                    td.setTitle(job.getString("title"));
+                    td.setDescription(job.getString("description"));
+                    td.setPlayUrl(job.getString("playUrl"));
+                    td.setLocation(job.getString("location"));
+                    td.setPicUrl(job.getString("picUrl"));
+                    td.setOuterPlayerUrl(job.getString("outerPlayerUrl"));
+                    tudou.add(td);
 
-            httpConnection = (HttpURLConnection) restServiceURL.openConnection();
-            httpConnection.setRequestMethod("GET");
-            httpConnection.setRequestProperty("Accept", "application/json");
-            if (httpConnection.getResponseCode() != 200) {
-                request.setAttribute("message", "NOT FOUND");
-                request.getRequestDispatcher("/tudou_result.jsp").forward(request, response);
-
-                throw new RuntimeException("HTTP GET Request Failed with Error code : "
-                        + httpConnection.getResponseCode());
-            }
-            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
-                    (httpConnection.getInputStream()), "utf-8"));
-            String result = "", output;
-            while ((output = responseBuffer.readLine()) != null) {
-                result += output;
-            }
-            // System.out.println(result);
-            JSONObject jo = JSONObject.fromObject(result);
-            System.out.println(jo);
-            if (jo != null) {
-                JSONArray array = jo.getJSONArray("results");
-                System.out.println(array);
-                if (array != null && array.size() > 0) {
-                    List<Tudou> tudou = new ArrayList<>();
-                    for (int i = 0; i < array.size(); i++) {
-                        JSONObject job = array.getJSONObject(i);
-                        System.out.println("---------------------------->" + job);
-                        Tudou td = new Tudou();
-                        td.setItemCode(job.getString("itemCode"));
-                        td.setTitle(job.getString("title"));
-                        td.setDescription(job.getString("description"));
-                        td.setPlayUrl(job.getString("playUrl"));
-                        td.setLocation(job.getString("location"));
-                        td.setPicUrl(job.getString("picUrl"));
-                        td.setOuterPlayerUrl(job.getString("outerPlayerUrl"));
-                        tudou.add(td);
-
-                    }
-                    // System.out.println(tudou);
-                    request.setAttribute("tudou", tudou);
-                } else {
-                    request.setAttribute("message", "NOT FOUND");
                 }
-
+                // System.out.println(tudou);
+                request.setAttribute("tudou", tudou);
+            } else {
+                request.setAttribute("message", "NOT FOUND");
             }
 
+        }
+        try {
             request.getRequestDispatcher("/tudou_result.jsp").forward(request, response);
+        } catch (ServletException e) {
+            System.out.println("_______exception");
 
-            //System.out.print(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            httpConnection.disconnect();
+        } catch (IOException e1) {
         }
 
     }
@@ -298,14 +258,11 @@ public class MovieServlet extends HttpServlet {
     public void searchByLocal(HttpServletRequest request, HttpServletResponse response) throws JSONException {
 
         String movieTitle = request.getParameter("moviename");
-
-        System.out.println("input info----------------------->" + movieTitle);
         String page = "";
         JSONObject jo = null;
 
         try {
             jo = initJSON(movieTitle); // to get the movie object using the initial method;
-
             System.out.println("job is exception---- job --------------test");
         } catch (Exception e) {
             System.out.println("Movie is not found");
@@ -321,6 +278,7 @@ public class MovieServlet extends HttpServlet {
         } else {
 
             System.out.println("/////////////test the job1");
+         
             // to update the movie 
             Moviedb movie = new Moviedb();
             //movie.setMovieid(jo.getInt("movieid"));
@@ -333,8 +291,9 @@ public class MovieServlet extends HttpServlet {
             movie.setStarts(jo.getString("starts"));
 
             request.setAttribute("movie", movie);
+            Double score =  tweetSentiment(request,response,movieTitle);
             page = "/local_result.jsp";
-
+            
         }
         //response to the client
         try {
@@ -347,6 +306,16 @@ public class MovieServlet extends HttpServlet {
 
     }
 
+    public double tweetSentiment(HttpServletRequest request, HttpServletResponse response, String keyword) {
+        String url ="http://www.tweetsentimentapi.com/api/?key=9a26859992f9fbebd32e26c1fd3c643db13d4cd0&text="+keyword;
+        
+        JSONObject jo =getHttpRequestResult(request,response,keyword,url);
+        Double score=jo.getDouble("score");
+        String attitude =jo.getString("sentiment");
+        System.out.println("------------------------------------------tweetSentiment"+score+attitude);
+        return score;
+    }
+
     public JSONObject initJSON(String movieTitle) throws Exception {
 
         NewJerseyClient movieClient = new NewJerseyClient();
@@ -354,6 +323,41 @@ public class MovieServlet extends HttpServlet {
         JSONObject jo;
         jo = JSONObject.fromObject(movieClient.find(String.class, movieTitle));
         return jo;
+    }
+
+    public JSONObject getHttpRequestResult(HttpServletRequest request, HttpServletResponse response, String keyword, String url) {
+
+        HttpURLConnection httpConnection = null;
+        try {
+            URL restServiceURL;
+            restServiceURL = new URL(url);
+
+            httpConnection = (HttpURLConnection) restServiceURL.openConnection();
+            httpConnection.setRequestMethod("GET");
+            httpConnection.setRequestProperty("Accept", "application/json");
+            if (httpConnection.getResponseCode() != 200) {
+                request.setAttribute("message", "NOT FOUND");
+                request.getRequestDispatcher("/" + request.getParameter("method") + "_result.jsp").forward(request, response);
+
+                throw new RuntimeException("HTTP GET Request Failed with Error code : "
+                        + httpConnection.getResponseCode());
+            }
+            BufferedReader responseBuffer = new BufferedReader(new InputStreamReader(
+                    (httpConnection.getInputStream()), "utf-8"));
+            String result = "", output;
+            while ((output = responseBuffer.readLine()) != null) {
+                result += output;
+            }
+            // System.out.println(result);
+            JSONObject jo = JSONObject.fromObject(result);
+
+            return jo;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            httpConnection.disconnect();
+        }
+        return null;
     }
 
     @Override
