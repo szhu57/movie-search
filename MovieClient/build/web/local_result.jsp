@@ -80,36 +80,39 @@
                     <h3 class="panel-title">Movie Information</h3>
                 </div>
                 <div class="panel-body">
-                    <h1><small>Movie Name </small> ${movie.title}</h1>
-                    <hr>
+                 
                     <div class="row">
                         <div class="col-md-3">
 
-                            <img src="${movie.coverurl}" width="205px" height="315px" class="img-rounded">
+                            <img src="${movie.coverurl}" width="300px" height="370px" >
                         </div>
 
                         <div class="col-md-5">
                             <ul class="list-group">
                                 <li class="list-group-item">
 
-                                    <h5><span class="label label-primary">Type</span> ${movie.type}</h5>
+                                    <h5><span class="label label-success">TITLE</span> ${movie.title}</h5>
+                                </li>
+                                <li class="list-group-item">
+
+                                    <h5><span class="label label-success">Type</span> ${movie.type}</h5>
                                 </li>
 
                                 <li class="list-group-item">                                  
-                                    <span class="label label-primary">Description</span><h5> ${movie.description}</h5>
+                                    <span class="label label-success">Description</span><h5> ${movie.description}</h5>
                                 </li>
                                 <li class="list-group-item">
 
-                                    <h5><span class="label label-primary"> Rating</span> ${movie.rating}</h5>
+                                    <h5><span class="label label-success"> Rating</span> ${movie.rating}</h5>
                                 </li>
 
                                 <li class="list-group-item">
 
-                                    <h5><span class="label label-primary">Director</span> ${movie.director}</h5>
+                                    <h5><span class="label label-success">Director</span> ${movie.director}</h5>
                                 </li>
                                 <li class="list-group-item">
 
-                                    <h5><span class="label label-primary">Starts</span> ${movie.starts}</h5>
+                                    <h5><span class="label label-success">Starts</span> ${movie.starts}</h5>
                                 </li>
                             </ul>
 
@@ -121,7 +124,7 @@
                             <br>
                             <br>
                             <br>
-                            <div id="container" style="min-width:300px;height:300px"></div>
+                            <div id="container" style="min-width:350px;height:350px"></div>
                             <script type="text/javascript">
                                 $(function () {
                                     $('#container').highcharts({
@@ -150,7 +153,7 @@
                                         },
                                         series: [{
                                                 type: 'pie',
-                                                name: 'Browser share',
+                                                name: 'tweet sentiment',
                                                 data: [
                                                     ['Positive', ${score}],
                                                     ['Negative', 1-${score}],

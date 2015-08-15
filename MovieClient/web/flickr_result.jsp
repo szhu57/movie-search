@@ -71,7 +71,6 @@
             </div>
             </div>
             <br>
-            <hr>
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title">
@@ -79,9 +78,9 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <p class="text-justify">
+                    <p >
                         <c:forEach var="url" items="${imgurl}">
-                            <img src="${url}" class="img-rounded img-margin"  onload="AutoResizeImage(0, 200, this)">
+                            <img src="${url}" >
                         </c:forEach>
                     </p>
                 </div>
