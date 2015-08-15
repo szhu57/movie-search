@@ -4,7 +4,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css">
 
+        
         <script src="./js/jquery-2.1.4.min.js"type="text/javascript"></script>
+        <script src="./js/highcharts.js"type="text/javascript"></script>
+        <script type="text/javascript" src="./js/exporting.js"><
         <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
 
         <title>Welcome to Movie Search!</title>
@@ -70,64 +73,114 @@
 
 
             <!-- picture slide-->     
-            <div>
-                <hr>
-                <div class="panel panel-info" >
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Movie Information</h3>
-                    </div>
-                    <div class="panel-body">
-                        <h1><small>Movie Name </small> ${movie.title}</h1>
-                        <hr>
-                        <div class="row">
-                            <div class="col-md-3">
 
-                                <img src="${movie.coverurl}" width="205px" height="315px" class="img-rounded">
-                            </div>
+            <hr>
+            <div class="panel panel-info" >
+                <div class="panel-heading">
+                    <h3 class="panel-title">Movie Information</h3>
+                </div>
+                <div class="panel-body">
+                    <h1><small>Movie Name </small> ${movie.title}</h1>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
 
-                            <div class="col-md-5">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
+                            <img src="${movie.coverurl}" width="205px" height="315px" class="img-rounded">
+                        </div>
 
-                                        <h5><span class="label label-primary">Type</span> ${movie.type}</h5>
-                                    </li>
+                        <div class="col-md-5">
+                            <ul class="list-group">
+                                <li class="list-group-item">
 
-                                    <li class="list-group-item">                                  
-                                        <span class="label label-primary">Description</span><h5> ${movie.description}</h5>
-                                    </li>
-                                    <li class="list-group-item">
+                                    <h5><span class="label label-primary">Type</span> ${movie.type}</h5>
+                                </li>
 
-                                        <h5><span class="label label-primary"> Rating</span> ${movie.rating}</h5>
-                                    </li>
+                                <li class="list-group-item">                                  
+                                    <span class="label label-primary">Description</span><h5> ${movie.description}</h5>
+                                </li>
+                                <li class="list-group-item">
 
-                                    <li class="list-group-item">
+                                    <h5><span class="label label-primary"> Rating</span> ${movie.rating}</h5>
+                                </li>
 
-                                        <h5><span class="label label-primary">Director</span> ${movie.director}</h5>
-                                    </li>
-                                    <li class="list-group-item">
+                                <li class="list-group-item">
 
-                                        <h5><span class="label label-primary">Starts</span> ${movie.starts}</h5>
-                                    </li>
-                                </ul>
+                                    <h5><span class="label label-primary">Director</span> ${movie.director}</h5>
+                                </li>
+                                <li class="list-group-item">
 
-                            </div>
+                                    <h5><span class="label label-primary">Starts</span> ${movie.starts}</h5>
+                                </li>
+                            </ul>
 
-                            <!-- duoshuo comments-->
-                            <div class="ds-thread" data-thread-key="{{ page.url }}" data-title="{{ page.title }}" ></div>
+                        </div>
+
+
+                        <!--tweet sentiment -->        
+                        <div class="col-md-4">
+                            <br>
+                            <br>
+                            <br>
+                            <div id="container" style="min-width:300px;height:300px"></div>
                             <script type="text/javascript">
-var duoshuoQuery = {short_name: "szhu57"};
-(function () {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';
-    ds.async = true;
-    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0]
-            || document.getElementsByTagName('body')[0]).appendChild(ds);
-})();
+                                $(function () {
+                                    $('#container').highcharts({
+                                        chart: {
+                                            plotBackgroundColor: null,
+                                            plotBorderWidth: null,
+                                            plotShadow: false
+                                        },
+                                        title: {
+                                            text: 'Sentiment Analysis'
+                                        },
+                                        tooltip: {
+                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                        },
+                                        plotOptions: {
+                                            pie: {
+                                                allowPointSelect: true,
+                                                cursor: 'pointer',
+                                                dataLabels: {
+                                                    enabled: true,
+                                                    color: '#000000',
+                                                    connectorColor: '#000000',
+                                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                                }
+                                            }
+                                        },
+                                        series: [{
+                                                type: 'pie',
+                                                name: 'Browser share',
+                                                data: [
+                                                    ['Positive', ${score}],
+                                                    ['Negative', 1-${score}],
+                                                ]
+                                            }]
+                                    });
+                                });
                             </script>
+                        </div><!--Sentiment Analysis-->
+                    </div>    
+                </div><!-- body-->
+          
 
 
+            <!-- duoshuo comments-->
+            <div class="ds-thread" data-thread-key="{{ page.url }}" data-title="{{ page.title }}" ></div>
+            <script type="text/javascript">
+                var duoshuoQuery = {short_name: "szhu57"};
+                (function () {
+                    var ds = document.createElement('script');
+                    ds.type = 'text/javascript';
+                    ds.async = true;
+                    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                    ds.charset = 'UTF-8';
+                    (document.getElementsByTagName('head')[0]
+                            || document.getElementsByTagName('body')[0]).appendChild(ds);
+                })();
+            </script>
 
-                            </body>
-                            </html>
+  </div><!--pannel-->
+
+    </body>
+</html>

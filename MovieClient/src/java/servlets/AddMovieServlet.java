@@ -51,7 +51,7 @@ public class AddMovieServlet extends HttpServlet {
         jo.put("rating", rating);
         NewJerseyClient movieClient = new NewJerseyClient();
         movieClient.create_JSON(jo.toString());
-
+       request.getRequestDispatcher("./index.jsp").forward(request, response);
     }
 
     @Override
