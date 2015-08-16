@@ -20,11 +20,11 @@ The application is implemented in Netbeans IDE, and should has well-organised la
 
 ![architecture](/img/architecture.png)
 
-This movie search engine totally complies with the typically MVC framework.
-Browser as the View which implemented by JSP sends request to the Movie Search
-Server. The Movie Search Server as the Controller implemented by Servlet can
-handle the request from the Brower and response to the client. The Movie server
-receive the request from the client and invoke the web service through Restful API
+This movie search engine totally complies with the typically **MVC** framework.
+Browser as the View which implemented by **JSP** sends request to the Movie Search
+Server. The Movie Search Server as the Controller implemented by **Servlet** can
+handle the request from the Browser and response to the client. The Movie server
+receive the request from the client and invoke the web service through **Restful API**
 like Google, Flickr, twitter, and etc..
 
 
@@ -33,8 +33,39 @@ Five child modules are comprised of the movie search engine, including Local
 movie search, Video search, Sentiment analysis, Image search, and General search. In
 the Local movie search the web service can accept the request and retrieves the movie
 details which store in my own database, including movie title, director, rating and so
-on. In the Video search integrated with the Tudou API and Youtube API. In the Image
-search and General search they are integrated with the Flickr API and Google API.
-And also Sentiment analysis integrated with the Twitter Sentiment.
+on. In the Video search integrated with the **Tudou API** and **Youtube API**. In the Image
+search and General search they are integrated with the** Flickr API** and **Google API**.
+And also Sentiment analysis integrated with the **Twitter Sentiment**.
 
+
+## Function demonstrate
+### home page
 ![homepage](/img/home.png)
+
+### Local Search
+![local](/img/local.png)
+
+### Image Search
+![flickr](/img/flickr.png)
+
+### Viedo Search
+![youtube](/img/youtube.png)
+
+
+### Google Search
+![google](/img/google.png)
+
+##About athor
+
+ * Name: Shuai ZHU
+
+ * Mail: szhu57@outlook.com
+
+ * Weibo:http://weibo.com/2613558687/profile
+ 
+ * University: Southeast University & Monash University (Australia)
+
+
+## How to get
+
+operation example:$ git clone http://github.com/szhu57/monash-hotelbooking
