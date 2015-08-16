@@ -3,19 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/youtube/YoutubeItem.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/web/youtube_result.jsp</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/servlets/MovieServlet.java</file>
             <file>file:/D:/Netbean/assignment/MovieClient/src/java/client/NewJerseyClient.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/web/local_result.jsp</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/new_flickr/FlickrItem.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/web/local.jsp</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/youtube/youtube.properties</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/new_flickr/Flickr.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/src/java/servlets/AddMovieServlet.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/web/flickr_result.jsp</file>
+            <file>file:/D:/Netbean/assignment/MovieClient/src/java/servlets/MovieServlet.java</file>
             <file>file:/D:/Netbean/assignment/MovieClient/src/java/youtube/YoutubeSearch.java</file>
-            <file>file:/D:/Netbean/assignment/MovieClient/web/google_result.jsp</file>
+            <file>file:/D:/Netbean/assignment/MovieClient/src/java/youtube/Auth.java</file>
         </group>
     </open-files>
 </project-private>
