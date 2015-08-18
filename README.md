@@ -16,6 +16,20 @@ The user can search for a particular movie by entering the title. The applicatio
 
 The application is implemented in Netbeans IDE, and should has well-organised layout and friendly GUI.
 
+## How to run this application  on the PC
+* environment  OS: window ,mac  Server:Glassfish
+
+* Glassfish config:you need to find the **config.xml** file, which located in the **dist** file. Add the content in this file into the **domain.xml** which is located in the installing path of glassfish(glassshfih/domains/domain1/config/domain.xml).
+
+* import the database id26346915.sql which is also located in the dist file.
+
+* copy the two **.war** package(one in the MoiveClient package,the other is in the MovieSearch package) into the **autodeploy** path which is located int the installing path of glassfish(glassfish/domains/domain1/autodeploy)
+
+* start you glassfish server
+
+* type this address <http://localhost:8080/MovieClient> in your browser.
+	
+
 ## System Architecture
 
 ![architecture](/img/architecture.png)
