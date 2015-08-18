@@ -74,13 +74,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <h3>Search result</h3>
+                        <h3>Search result from Flickr</h3>
                     </div>
                 </div>
                 <div class="panel-body">
                     <p >
                         <c:forEach var="url" items="${imgurl}">
-                            <img src="${url}" >
+                            <a href="${url}" >
+                                <img src="${url}" height="250" width="300" >
+                            </a>
                         </c:forEach>
                     </p>
                 </div>

@@ -4,19 +4,19 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css">
 
-        
+
         <script src="./js/jquery-2.1.4.min.js"type="text/javascript"></script>
         <script src="./js/highcharts.js"type="text/javascript"></script>
         <script type="text/javascript" src="./js/exporting.js"><
-        <script src="./bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
+                    < script src = "./bootstrap-3.3.5-dist/js/bootstrap.min.js" type = "text/javascript" ></script>
 
-        <title>Welcome to Movie Search!</title>
+        <title>Welcome to ${movie.title} Movie </title>
     </head>
     <body>
 
         <nav class="navbar navbar-inverse" role="navigation">
             <div class="container-fluid" >
-                <!-- Brand and toggle get grouped for better mobile display -->
+
 
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -56,7 +56,7 @@
                 <form role="form" class="form-horizontal" method="post" action="MovieServlet?method=local">
                     <div class="form-group-lg">
                         <div class="col-md-8 col-md-offset-2">
-                            <div class="yui3-skin-sam input-group">
+                            <div class=" input-group">
                                 <div id="the-basics">
                                     <input type="text" name="moviename" class="typeahead form-control" placeholder="Search">
                                 </div>
@@ -80,7 +80,7 @@
                     <h3 class="panel-title">Movie Information</h3>
                 </div>
                 <div class="panel-body">
-                 
+
                     <div class="row">
                         <div class="col-md-3">
 
@@ -126,64 +126,64 @@
                             <br>
                             <div id="container" style="min-width:350px;height:350px"></div>
                             <script type="text/javascript">
-                                $(function () {
-                                    $('#container').highcharts({
-                                        chart: {
-                                            plotBackgroundColor: null,
-                                            plotBorderWidth: null,
-                                            plotShadow: false
-                                        },
-                                        title: {
-                                            text: 'Sentiment Analysis'
-                                        },
-                                        tooltip: {
-                                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-                                        },
-                                        plotOptions: {
-                                            pie: {
-                                                allowPointSelect: true,
-                                                cursor: 'pointer',
-                                                dataLabels: {
-                                                    enabled: true,
-                                                    color: '#000000',
-                                                    connectorColor: '#000000',
-                                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-                                                }
-                                            }
-                                        },
-                                        series: [{
-                                                type: 'pie',
-                                                name: 'tweet sentiment',
-                                                data: [
-                                                    ['Positive', ${score}],
-                                                    ['Negative', 1-${score}],
-                                                ]
-                                            }]
-                                    });
-                                });
+                                        $(function () {
+                                            $('#container').highcharts({
+                                                chart: {
+                                                    plotBackgroundColor: null,
+                                                    plotBorderWidth: null,
+                                                    plotShadow: false
+                                                },
+                                                title: {
+                                                    text: 'Sentiment Analysis'
+                                                },
+                                                tooltip: {
+                                                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                                                },
+                                                plotOptions: {
+                                                    pie: {
+                                                        allowPointSelect: true,
+                                                        cursor: 'pointer',
+                                                        dataLabels: {
+                                                            enabled: true,
+                                                            color: '#000000',
+                                                            connectorColor: '#000000',
+                                                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                                        }
+                                                    }
+                                                },
+                                                series: [{
+                                                        type: 'pie',
+                                                        name: 'tweet sentiment',
+                                                        data: [
+                                                            ['Positive', ${score}],
+                                                            ['Negative', 1 -${score}],
+                                                        ]
+                                                    }]
+                                            });
+                                        });
                             </script>
                         </div><!--Sentiment Analysis-->
                     </div>    
                 </div><!-- body-->
-          
 
 
-            <!-- duoshuo comments-->
-            <div class="ds-thread" data-thread-key="{{ page.url }}" data-title="{{ page.title }}" ></div>
-            <script type="text/javascript">
-                var duoshuoQuery = {short_name: "szhu57"};
-                (function () {
-                    var ds = document.createElement('script');
-                    ds.type = 'text/javascript';
-                    ds.async = true;
-                    ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-                    ds.charset = 'UTF-8';
-                    (document.getElementsByTagName('head')[0]
-                            || document.getElementsByTagName('body')[0]).appendChild(ds);
-                })();
-            </script>
 
-  </div><!--pannel-->
+                <!-- duoshuo comments-->
+                <div class="ds-thread" data-thread-key="{{ page.url }}" data-title="{{ page.title }}" ></div>
+                <script type="text/javascript">
+                    var duoshuoQuery = {short_name: "szhu57"};
+                    (function () {
+                        var ds = document.createElement('script');
+                        ds.type = 'text/javascript';
+                        ds.async = true;
+                        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                        ds.charset = 'UTF-8';
+                        (document.getElementsByTagName('head')[0]
+                                || document.getElementsByTagName('body')[0]).appendChild(ds);
+                    })();
+                </script>
+
+            </div><!--pannel-->
 
     </body>
 </html>
