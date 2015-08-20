@@ -82,4 +82,4 @@ And also Sentiment analysis integrated with the **Twitter Sentiment**.
 
 ## How to get
 
-operation example:$ git clone http://github.com/szhu57/monash-hotelbooking
+operation example:$ git clone http://github.com/szhu57/movie-search.git
